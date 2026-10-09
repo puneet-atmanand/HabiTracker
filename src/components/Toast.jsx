@@ -1,17 +1,17 @@
-import { useEffect, useState } from 'react';
+import { useState, useCallback } from 'react';
 
 let toastCounter = 0;
 
 export function useToast() {
   const [toasts, setToasts] = useState([]);
 
-  function addToast(type, message, duration = 3500) {
+  const addToast = useCallback((type, message, duration = 3500) => {
     const id = ++toastCounter;
     setToasts(prev => [...prev, { id, type, message }]);
     setTimeout(() => {
       setToasts(prev => prev.filter(t => t.id !== id));
     }, duration);
-  }
+  }, []);
 
   return { toasts, addToast };
 }
